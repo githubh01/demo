@@ -1,0 +1,23 @@
+proxy-groups:
+  - name: "PROXY"
+    type: select
+    proxies:
+      - 日常节点
+  - name: "原神"
+    type: select
+    proxies:
+      - 游戏节点
+rule-providers:
+  HoYoverse:
+    type: http
+    behavior: classical
+    format: yaml
+    path: ./Rules/HoYoverse.yaml 
+    url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HoYoverse/HoYoverse.yaml"
+    interval: 86400
+rules:
+  - AND,((DST-PORT,22101/22102),(NETWORK,udp)),原神 //用于游戏连接
+  - AND,((DOMAIN,autopatchhk.yuanshen.com),(DST-PORT,443),(NETWORK,tcp)),PROXY //用于游戏更新
+  - DOMAIN,osasiadispatch.yuanshen.com,PROXY //用于游戏启动
+  - DOMAIN,osuspider.yuanshen.com,PROXY //用于游戏启动
+  - RULE-SET,HoYoverse,PROXY //HoYoLAB必须PROXY
